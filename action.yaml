@@ -1,0 +1,32 @@
+name: Clone private github submodule
+description: Clones a private github submodule using ssh deploy keys
+author: pietrobolcato
+branding:
+  icon: download
+  color: blue
+
+inputs:
+  ssh_private_key:
+    description: "The private SSH key to use for authentication."
+    required: true
+  module_link:
+    description: "The link to the module to clone, in the format: my-organization/my-repo"
+    required: true
+  module_path:
+    description: "Path where the module is located, relative to the root of the repository"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: clone-submodule
+      run: |
+        mkdir -p $HOME/.ssh
+        echo "${{ inputs.ssh_private_key }}" > $HOME/.ssh/ssh.key
+        chmod 600 $HOME/.ssh/ssh.key
+        export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/ssh.key"
+        git submodule set-url "${{ inputs.module_path }}" git@github.com:"${{ inputs.module_link }}".git
+        git submodule update --init --recursive
+        git submodule set-url "${{ inputs.module_path }}" https://github.com/"${{ inputs.module_link }}".git
+        unset GIT_SSH_COMMAND
+      shell: bash
