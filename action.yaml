@@ -25,8 +25,8 @@ runs:
         echo "${{ inputs.ssh_private_key }}" > $HOME/.ssh/ssh.key
         chmod 600 $HOME/.ssh/ssh.key
         export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/ssh.key"
-        git submodule set-url "${{ inputs.module_path }}" git@github.com:"${{ inputs.module_link }}".git
-        git submodule update --init --recursive
-        git submodule set-url "${{ inputs.module_path }}" https://github.com/"${{ inputs.module_link }}".git
+        git submodule set-url ${{ inputs.module_path }} git@github.com:${{ inputs.module_link }}.git
+        git submodule set-url ${{ inputs.module_path }} https://github.com/${{ inputs.module_link }}.git
+        git submodule update --init --recursive ${{ inputs.module_path }}
         unset GIT_SSH_COMMAND
       shell: bash
