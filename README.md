@@ -12,7 +12,7 @@ This action can be used in your GitHub workflow by adding the following to your 
 
 ```yaml
 - name: Clone private submodule
-  uses: pietrobolcato/action-clone-private-submodule@v1.0.0
+  uses: pietrobolcato/action-clone-private-submodule@main
   with:
     ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
     module_link: my-organization/my-repo
